@@ -1,0 +1,1 @@
+Since I am planning to use AeroGear Controller soon (with JBoss), these server side codes are never designed or revisited. They are just implemented to bootstrap my mobile trials. Messy codes, you may totally skip them.
