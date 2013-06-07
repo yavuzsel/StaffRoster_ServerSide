@@ -41,7 +41,9 @@
 			array_push($result_array, array(
 				"cn" => $info[$i]["cn"][0],
 				"rhatlocation" => $info[$i]["rhatlocation"][0],
-				"mail" => $info[$i]["mail"][0]
+				"mail" => $info[$i]["mail"][0],
+				"title" => $info[$i]["title"][0],
+				"telephonenumber" => $info[$i]["telephonenumber"][0]
 			));
 		}
 		

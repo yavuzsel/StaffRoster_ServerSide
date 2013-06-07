@@ -44,7 +44,7 @@
 		$manager_filter = $manager_query_fields[0];
 		$manager_dn = substr($manager_query, strpos($manager_query, ",")+1);
 		// get manager here
-		$sr=ldap_search($ds, $manager_dn, $manager_filter);  
+		$sr=ldap_search($ds, $manager_dn, $manager_filter);
 
 		$info = ldap_get_entries($ds, $sr);
 		
@@ -56,7 +56,9 @@
 			array_push($result_array, array(
 				"cn" => $info[$i]["cn"][0],
 				"rhatlocation" => $info[$i]["rhatlocation"][0],
-				"mail" => $info[$i]["mail"][0]
+				"mail" => $info[$i]["mail"][0],
+				"title" => $info[$i]["title"][0],
+				"telephonenumber" => $info[$i]["telephonenumber"][0]
 			));
 		}
 		
