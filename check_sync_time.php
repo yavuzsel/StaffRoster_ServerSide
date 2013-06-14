@@ -36,7 +36,7 @@
 							   // read-only access
                                                            
                 // TODO: this query takes too long (~3 secs on RH wired network). FIX IT!
-		$sr=ldap_search($ds, $ldap_dn, $ldap_modifytime_query_head . UnixToLDAP($last_sync_date) . ")");
+		$sr=ldap_search($ds, $ldap_dn, $ldap_sync_modifytime_query_head . UnixToLDAP($last_sync_date) . ")");
                 if(ldap_count_entries($ds, $sr) > 0) {
                     $response = "true";
                 }

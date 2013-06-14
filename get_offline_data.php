@@ -1,4 +1,14 @@
-<?php	
+<?php
+        function UnixToLDAP($unix_ts) {
+            $year = gmdate("Y", $unix_ts);
+            $month = gmdate("m", $unix_ts);
+            $day = gmdate("d", $unix_ts);
+            $hour = gmdate("H", $unix_ts);
+            $minute = gmdate("i", $unix_ts);
+            $second = gmdate("s", $unix_ts);
+            return $year.$month.$day.$hour.$minute.$second."Z";
+        }
+        
 	/*
 	*	constants in constants.php -- fill/remove according to your ldap instance and schema
 	*
@@ -12,15 +22,19 @@
 	*/
 	require_once("constants.php");
         
-        // any other way to get all users?
-        $query = "";
+        $last_sync_date = (isset($_REQUEST["last_sync_date"]) && strlen($_REQUEST["last_sync_date"]))?$_REQUEST["last_sync_date"]:((isset($_REQUEST["where"]) && strlen($_REQUEST["where"]))?((isset(json_decode($_REQUEST["where"])->last_sync_date) && strlen(json_decode($_REQUEST["where"])->last_sync_date))?json_decode($_REQUEST["where"])->last_sync_date:""):"");
+	
+	if(strlen($last_sync_date) == 0){
+		echo "error! no proper query parameter received...";
+		die;
+	}
 	
 	$ds=ldap_connect($ldap_url);
 	if ($ds) { 
 		$r=ldap_bind($ds);     // this is an "anonymous" bind, typically
 							   // read-only access
 
-		$sr=ldap_search($ds, $ldap_dn, $ldap_query_head.$query.$ldap_query_tail);  
+		$sr=ldap_search($ds, $ldap_dn, $ldap_modifytime_query_head. UnixToLDAP($last_sync_date) ."))");  
 
 		$info = ldap_get_entries($ds, $sr);
 
