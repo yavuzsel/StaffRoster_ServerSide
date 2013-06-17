@@ -58,8 +58,7 @@
 		$count = $info["count"];
 		for($i=0; $i<$count; $i++) {
 			//echo "<pre>"; var_dump($infoitem); echo "</pre><br /><br />";
-                        if(strcmp($info[$i]["uid"][0], "yyilmaz") != 0)
-                            array_push($existing_uids, $info[$i]["uid"][0]);
+                        array_push($existing_uids, $info[$i]["uid"][0]);
                         if(LDAPtoUnix($info[$i]["modifytimestamp"][0]) > $last_sync_date)
                             array_push($result_array, array(
                                     "id" => ($i+1),
