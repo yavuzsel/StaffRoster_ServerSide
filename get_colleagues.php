@@ -14,6 +14,8 @@
 	
 	$query = (isset($_REQUEST["colleague"]) && strlen($_REQUEST["colleague"]))?$_REQUEST["colleague"]:((isset($_REQUEST["where"]) && strlen($_REQUEST["where"]))?((isset(json_decode($_REQUEST["where"])->colleague) && strlen(json_decode($_REQUEST["where"])->colleague))?json_decode($_REQUEST["where"])->colleague:""):"");
 	
+	$colleagues_count = (isset($_REQUEST["count"]) && strlen($_REQUEST["count"]))?$_REQUEST["count"]:((isset($_REQUEST["where"]) && strlen($_REQUEST["where"]))?((isset(json_decode($_REQUEST["where"])->count) && strlen(json_decode($_REQUEST["where"])->count))?json_decode($_REQUEST["where"])->count:""):"");
+	
 	if(strlen($query) == 0){
 		echo "error! no proper query parameter received...";
 		die;
@@ -49,15 +51,19 @@
 		$count = $info["count"];
 
 		$result_array = array();
-		for($i=0; $i<$count; $i++) {
-			//echo "<pre>"; var_dump($infoitem); echo "</pre><br /><br />";
-			array_push($result_array, array(
-				"cn" => $info[$i]["cn"][0],
-				"rhatlocation" => $info[$i]["rhatlocation"][0],
-				"mail" => $info[$i]["mail"][0],
-				"title" => $info[$i]["title"][0],
-				"telephonenumber" => $info[$i]["telephonenumber"][0]
-			));
+		if(strlen($colleagues_count) == 0){
+			for($i=0; $i<$count; $i++) {
+				array_push($result_array, array(
+					"uid" => $info[$i]["uid"][0],
+					"cn" => $info[$i]["cn"][0],
+					"rhatlocation" => $info[$i]["rhatlocation"][0],
+					"mail" => $info[$i]["mail"][0],
+					"title" => $info[$i]["title"][0],
+					"telephonenumber" => $info[$i]["telephonenumber"][0]
+				));
+			}
+		} else {
+			array_push($result_array, array("count" => $info["count"]));
 		}
 
 		/*echo "<pre>"; var_dump($result_array); echo "</pre>";

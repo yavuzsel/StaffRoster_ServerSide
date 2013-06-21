@@ -55,6 +55,7 @@
 			for($i=0; $i<$count; $i++) {
 				//echo "<pre>"; var_dump($infoitem); echo "</pre><br /><br />";
 				array_push($result_array, array(
+					"uid" => $info[$i]["uid"][0],
 					"cn" => $info[$i]["cn"][0],
 					"rhatlocation" => $info[$i]["rhatlocation"][0],
 					"mail" => $info[$i]["mail"][0],
