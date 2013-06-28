@@ -43,7 +43,15 @@
 		$manager_filter = $colleague_query;
 		$manager_dn = substr($colleague_query, strpos($colleague_query, ",")+1);
 		// get manager here
-
+		if(strlen($manager_filter) == 0) {
+			ldap_close($ds);
+			// set the status
+			header('HTTP/1.1 404 Not Found');
+			// set the content type
+			header('Content-type: application/json');
+			echo json_encode("Unable to find manager.");
+			die;
+		}
 		$sr=ldap_search($ds, $manager_dn, $ldap_mngr_filter_query_head.$manager_filter.")");  
 
 		$info = ldap_get_entries($ds, $sr);

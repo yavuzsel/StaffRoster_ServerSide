@@ -47,7 +47,7 @@
         }
         $fp = fopen($fullpath,'x');
         $xml_data = simplexml_load_string($rawdata);
-        /*echo $xml_data->return;
+        /*echo base64_decode($xml_data->return);
         die;*/
         fwrite($fp, base64_decode($xml_data->return));
         fclose($fp); 
