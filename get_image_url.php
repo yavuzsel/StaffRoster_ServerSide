@@ -49,7 +49,16 @@
         $xml_data = simplexml_load_string($rawdata);
         /*echo base64_decode($xml_data->return);
         die;*/
-        fwrite($fp, base64_decode($xml_data->return));
+        if(!fwrite($fp, base64_decode($xml_data->return))) {
+	    fclose($fp);
+	    // set the status
+	    header('HTTP/1.1 404 Not Found');
+	    // set the content type
+	    header('content-type: application/json');
+	    echo json_encode("File write error!");
+	    die;
+	    
+	}
         fclose($fp); 
     }
 
