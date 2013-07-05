@@ -59,8 +59,8 @@
 		for($i=0; $i<$count; $i++) {
 			//echo "<pre>"; var_dump($infoitem); echo "</pre><br /><br />";
                         array_push($existing_uids, $info[$i]["uid"][0]);
-                        if(LDAPtoUnix($info[$i]["modifytimestamp"][0]) > $last_sync_date)
-                            array_push($result_array, array(
+                        if(LDAPtoUnix($info[$i]["modifytimestamp"][0]) > $last_sync_date) {
+				$employee_as_dict = array(
                                     "id" => ($i+1),
                                     "uid" => $info[$i]["uid"][0],
                                     "cn" => $info[$i]["cn"][0],
@@ -69,7 +69,11 @@
                                     "title" => $info[$i]["title"][0],
                                     "telephonenumber" => $info[$i]["telephonenumber"][0],
                                     "manager" => $info[$i]["manager"][0]
-                            ));
+				);
+				if(array_key_exists("mobile",$info[$i]))
+					$employee_as_dict["mobile"] = $info[$i]["mobile"][0];
+				array_push($result_array, $employee_as_dict);
+			}
 		}
 		
 		// set the status

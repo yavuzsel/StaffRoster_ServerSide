@@ -28,42 +28,46 @@
 		die;
 	}
 	$response = "false";
-        // TODO: check if client is already sync and respond accordingly...
-        require_once("constants.php");
-        $ds=ldap_connect($ldap_url);
-	if ($ds) { 
-		$r=ldap_bind($ds);     // this is an "anonymous" bind, typically
-							   // read-only access
-                                                           
-                // TODO: this query takes too long (~6 secs on RH wired network). FIX IT!
-                //$time_start = microtime(true);
-
-                $sr=ldap_search($ds, $ldap_dn, $ldap_sync_modifytime_query_head . UnixToLDAP($last_sync_date) . ")");
-                
-                
-                /*$sr=ldap_search($ds, $ldap_dn, $alternate_time_query);  
-
-		$info = ldap_get_entries($ds, $sr);
-
-		$count = $info["count"];
-		for($i=0; $i<$count; $i++) {
-                    if(LDAPtoUnix($info[$i]["modifytimestamp"][0]) > $last_sync_date) {
-                        $response = "true";
-                        break;
-                    }
-		}*/
-                
-                /*$time_end = microtime(true);
-                $time = $time_end - $time_start;
-                
-                echo "Search in $time seconds\n";*/
-		
-                if(ldap_count_entries($ds, $sr) > 0) {
-                    $response = "true";
-                }
-                
-		ldap_close($ds);
+        if($last_sync_date == "0"){ // first sync, no need to check LDAP
+	    $response = "true";
+	} else {
+	    require_once("constants.php");
+	    $ds=ldap_connect($ldap_url);
+	    if ($ds) { 
+		    $r=ldap_bind($ds);     // this is an "anonymous" bind, typically
+							       // read-only access
+							       
+		    // TODO: this query takes too long (~6 secs on RH wired network). FIX IT!
+		    //$time_start = microtime(true);
+    
+		    $sr=ldap_search($ds, $ldap_dn, $ldap_sync_modifytime_query_head . UnixToLDAP($last_sync_date) . ")");
+		    
+		    
+		    /*$sr=ldap_search($ds, $ldap_dn, $alternate_time_query);  
+    
+		    $info = ldap_get_entries($ds, $sr);
+    
+		    $count = $info["count"];
+		    for($i=0; $i<$count; $i++) {
+			if(LDAPtoUnix($info[$i]["modifytimestamp"][0]) > $last_sync_date) {
+			    $response = "true";
+			    break;
+			}
+		    }*/
+		    
+		    /*$time_end = microtime(true);
+		    $time = $time_end - $time_start;
+		    
+		    echo "Search in $time seconds\n";*/
+		    
+		    if(ldap_count_entries($ds, $sr) > 0) {
+			$response = "true";
+		    }
+		    
+		    ldap_close($ds);
+	    }
 	}
+        
 	$result_array = array();
         array_push($result_array, array(
                         "sync_required" => $response

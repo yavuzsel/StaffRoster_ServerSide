@@ -38,14 +38,17 @@
 		$count = $info["count"];
 		for($i=0; $i<$count; $i++) {
 			//echo "<pre>"; var_dump($infoitem); echo "</pre><br /><br />";
-			array_push($result_array, array(
+			$employee_as_dict = array(
 				"uid" => $info[$i]["uid"][0],
 				"cn" => $info[$i]["cn"][0],
 				"rhatlocation" => $info[$i]["rhatlocation"][0],
 				"mail" => $info[$i]["mail"][0],
 				"title" => $info[$i]["title"][0],
 				"telephonenumber" => $info[$i]["telephonenumber"][0]
-			));
+			);
+			if(array_key_exists("mobile",$info[$i]))
+				$employee_as_dict["mobile"] = $info[$i]["mobile"][0];
+			array_push($result_array, $employee_as_dict);
 		}
 		
 		/*$result_array = array(
