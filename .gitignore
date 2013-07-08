@@ -39,7 +39,7 @@ Thumbs.db
 
 #Local Files#
 #####################
-constants.php
+#constants.php
 get_data.php
 get_img_url.php
 simple_html_dom.php
