@@ -43,23 +43,33 @@
         $rawdata = curl_exec($ch);
         curl_close ($ch);
         if(file_exists($fullpath)){
-                unlink($fullpath);
+            unlink($fullpath);
         }
-        $fp = fopen($fullpath,'x');
+        
         $xml_data = simplexml_load_string($rawdata);
         /*echo base64_decode($xml_data->return);
         die;*/
-        if(!fwrite($fp, base64_decode($xml_data->return))) {
+	if(!empty($xml_data->return)) {
+	    $fp = fopen($fullpath,'x');
+	    if(!fwrite($fp, base64_decode($xml_data->return))) {
+		fclose($fp);
+		// set the status
+		header('HTTP/1.1 404 Not Found');
+		// set the content type
+		header('content-type: application/json');
+		echo json_encode("File write error!");
+		die;
+		
+	    }
 	    fclose($fp);
+	} else {
 	    // set the status
 	    header('HTTP/1.1 404 Not Found');
 	    // set the content type
 	    header('content-type: application/json');
-	    echo json_encode("File write error!");
+	    echo json_encode("No image on docspace found!");
 	    die;
-	    
 	}
-        fclose($fp); 
     }
 
     // Method: POST, PUT, GET etc

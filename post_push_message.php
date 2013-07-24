@@ -28,7 +28,7 @@
         // send messages to uids
         if(count($uids_array) > 0){
             // request only if there are employees to push the message
-            $data = array("message" => array("alert" => $message, "badge" => 1), "alias" => $uids_array);
+            $data = array("message" => array("alert" => $message, "badge" => 1), "alias" => $uids_array, "staging" => "production");
             push_data_to_url($data, $agpush_selected_url, "Location-based");
         } else {
 	    // set the status
@@ -40,7 +40,7 @@
         
     } else {
         // no location is received. send to everbody? or do nothing?
-        $data = array("alert" => $message, "badge" => 1);
+        $data = array("alert" => $message, "badge" => 1, "staging" => "production");
         push_data_to_url($data, $agpush_broadcast_url, "Broadcast");
     }
     
